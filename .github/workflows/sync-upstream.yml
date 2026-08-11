@@ -1,0 +1,87 @@
+name: Sync upstream
+
+# Weekly sync of upstream datafusion-contrib/geodatafusion into this fork.
+# Opens (or updates) a pull request rather than pushing to the default branch,
+# so upstream changes are reviewed against local modifications before merging.
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM: https://github.com/datafusion-contrib/geodatafusion
+      UPSTREAM_BRANCH: main
+      SYNC_BRANCH: sync/upstream
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream "$UPSTREAM"
+          git fetch upstream "$UPSTREAM_BRANCH"
+
+      - name: Prepare sync branch
+        id: prep
+        run: |
+          base_branch="${GITHUB_REF_NAME}"
+          echo "base_branch=$base_branch" >> "$GITHUB_OUTPUT"
+
+          # Nothing to do if we're already up to date with upstream.
+          behind=$(git rev-list --count "HEAD..upstream/${UPSTREAM_BRANCH}")
+          echo "commits behind upstream: $behind"
+          if [ "$behind" -eq 0 ]; then
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+
+          git checkout -B "$SYNC_BRANCH"
+          # Try a clean merge; if it conflicts, keep the conflicted merge state
+          # committed so the PR clearly surfaces what needs manual resolution.
+          if git merge --no-edit "upstream/${UPSTREAM_BRANCH}"; then
+            echo "conflicts=false" >> "$GITHUB_OUTPUT"
+          else
+            git add -A
+            git commit --no-edit || true
+            echo "conflicts=true" >> "$GITHUB_OUTPUT"
+          fi
+          git push --force origin "$SYNC_BRANCH"
+
+      - name: Open or update pull request
+        if: steps.prep.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ steps.prep.outputs.base_branch }}
+          CONFLICTS: ${{ steps.prep.outputs.conflicts }}
+        run: |
+          title="Sync upstream (datafusion-contrib/geodatafusion)"
+          body="Automated weekly sync of \`upstream/${UPSTREAM_BRANCH}\`."
+          if [ "$CONFLICTS" = "true" ]; then
+            title="⚠️ $title — merge conflicts"
+            body="$body
+
+          **This merge has conflicts that need manual resolution** before merging."
+          fi
+
+          if gh pr view "$SYNC_BRANCH" --json number >/dev/null 2>&1; then
+            gh pr edit "$SYNC_BRANCH" --title "$title" --body "$body"
+          else
+            gh pr create --base "$BASE" --head "$SYNC_BRANCH" --title "$title" --body "$body"
+          fi
