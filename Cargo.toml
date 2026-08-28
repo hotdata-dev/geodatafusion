@@ -14,7 +14,7 @@ authors = ["Kyle Barron <kylebarron2@gmail.com>"]
 edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/datafusion-contrib/geodatafusion"
-rust-version = "1.94"
+rust-version = "1.95"
 categories = ["science::geo"]
 
 [workspace.dependencies]

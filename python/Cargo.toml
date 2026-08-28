@@ -9,7 +9,7 @@ repository = "https://github.com/datafusion-contrib/geodatafusion"
 license = "MIT OR Apache-2.0"
 keywords = ["python", "arrow", "geospatial"]
 categories = ["wasm", "science::geo"]
-rust-version = "1.94"
+rust-version = "1.95"
 
 [lib]
 name = "_rust"
@@ -28,3 +28,9 @@ pyo3 = { version = "0.26", features = [
     "anyhow",
     "abi3-py39",
 ] }
+
+# TEMPORARY: see the matching section in the workspace root Cargo.toml.
+[patch.crates-io]
+geoarrow-array = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-expr-geo = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-schema = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
