@@ -4816,8 +4816,3 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
-
-[[patch.unused]]
-name = "geoarrow-cast"
-version = "0.8.0"
-source = "git+https://github.com/geoarrow/geoarrow-rs?rev=ba9bfcd6fd89348c6d95e3735e36c165256d0ce7#ba9bfcd6fd89348c6d95e3735e36c165256d0ce7"
