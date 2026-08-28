@@ -56,7 +56,6 @@ wkt = "0.14"
 # geoarrow-rs publishes a release built against arrow 59.
 [patch.crates-io]
 geoarrow-array = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
-geoarrow-cast = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
 geoarrow-expr-geo = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
 geoarrow-flatgeobuf = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
 geoarrow-geojson = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
