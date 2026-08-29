@@ -14,22 +14,22 @@ authors = ["Kyle Barron <kylebarron2@gmail.com>"]
 edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/datafusion-contrib/geodatafusion"
-rust-version = "1.88"
+rust-version = "1.95"
 categories = ["science::geo"]
 
 [workspace.dependencies]
 approx = "0.5.1"
-arrow-arith = "58.1"
-arrow-array = "58.1"
-arrow-buffer = "58.1"
-arrow-schema = "58.1"
+arrow-arith = "59.2"
+arrow-array = "59.2"
+arrow-buffer = "59.2"
+arrow-schema = "59.2"
 async-trait = "0.1"
-datafusion = { version = "54", default-features = false }
-datafusion-datasource = { version = "54", default-features = false }
-datafusion-datasource-parquet = "54"
+datafusion = { version = "55", default-features = false }
+datafusion-datasource = { version = "55", default-features = false }
+datafusion-datasource-parquet = "55"
 flatgeobuf = { version = "5.0", default-features = false }
 futures = "0.3"
-geo = "0.31.0"
+geo = "0.33.1"
 geo-traits = "0.3.0"
 geoarrow-array = "0.8.0"
 geoarrow-flatgeobuf = "0.8.0"
@@ -49,3 +49,16 @@ thiserror = "1"
 tokio = { version = "1.9", default-features = false }
 wkb = "0.9"
 wkt = "0.14"
+
+# TEMPORARY: DataFusion 55 requires arrow 59, but no geoarrow-rs release
+# supports arrow 59 yet (0.8.0 pins arrow ^58). geoarrow-rs main has the
+# arrow 59 bump (geoarrow/geoarrow-rs#1461). Drop this section once
+# geoarrow-rs publishes a release built against arrow 59.
+[patch.crates-io]
+geoarrow-array = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-expr-geo = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-flatgeobuf = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-geojson = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-schema = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoarrow-test = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }
+geoparquet = { git = "https://github.com/geoarrow/geoarrow-rs", rev = "ba9bfcd6fd89348c6d95e3735e36c165256d0ce7" }

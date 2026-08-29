@@ -118,14 +118,14 @@ impl ScalarUDFImpl for EndPoint {
 
 // Not yet exported because we don't handle the nth point second argument yet
 #[derive(Debug, Eq, PartialEq, Hash)]
-#[expect(dead_code)]
+#[allow(dead_code)]
 struct PointN {
     coord_type: CoordType,
 }
 
 impl PointN {
     // Not yet exported because we don't handle the nth point second argument yet
-    #[expect(dead_code)]
+    #[allow(dead_code)]
     pub fn new(coord_type: CoordType) -> Self {
         Self { coord_type }
     }
@@ -138,7 +138,7 @@ impl Default for PointN {
 }
 
 // Not yet exported because we don't handle the nth point second argument yet
-#[expect(dead_code)]
+#[allow(dead_code)]
 static POINT_N_DOCUMENTATION: OnceLock<Documentation> = OnceLock::new();
 
 impl ScalarUDFImpl for PointN {
