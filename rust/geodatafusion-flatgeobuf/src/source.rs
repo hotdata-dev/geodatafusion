@@ -142,7 +142,14 @@ impl FileSource for FlatGeobufSource {
         &self,
         f: &mut dyn FnMut(&Arc<dyn PhysicalExpr>) -> Result<TreeNodeRecursion>,
     ) -> Result<TreeNodeRecursion> {
+<<<<<<< HEAD
         apply_expression_roots(self.projection.iter().map(|proj_expr| &proj_expr.expr), f)
+=======
+        datafusion::physical_plan::apply_expression_roots(
+            self.projection.iter().map(|projection| &projection.expr),
+            f,
+        )
+>>>>>>> upstream/main
     }
 }
 
